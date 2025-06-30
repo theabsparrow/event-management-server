@@ -1,12 +1,17 @@
 import { Router } from "express";
-import { userController } from "../module/user/user.controller";
+import { userRoute } from "../module/user/user.route";
+import { authRoute } from "../module/auth/auth.route";
 
 const router = Router();
 
 const moduleRoutes = [
   {
     path: "/user",
-    route: userController.createUser,
+    route: userRoute,
+  },
+  {
+    path: "/auth",
+    route: authRoute,
   },
 ];
 

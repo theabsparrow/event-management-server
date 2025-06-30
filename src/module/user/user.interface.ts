@@ -9,4 +9,5 @@ export type TUSer = {
   photoURL: string;
   role: TUSerRole;
   isDeleted: boolean;
+  passwordChangedAt?: Date;
 };

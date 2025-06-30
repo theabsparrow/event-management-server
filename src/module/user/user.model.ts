@@ -36,6 +36,9 @@ const UserSchema = new Schema<TUSer>(
       type: Boolean,
       default: false,
     },
+    passwordChangedAt: {
+      type: Date,
+    },
   },
   {
     timestamps: true,
