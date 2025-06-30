@@ -72,6 +72,59 @@ const createAttendeeToJoin = async (userId: string, id: string) => {
   }
 };
 
+const cancelJoining = async (userId: string, id: string) => {
+  const isEventExists = await Event.findById(id).select("date time isDeleted");
+  if (!isEventExists) {
+    throw new AppError(StatusCodes.NOT_FOUND, "this event data not fount");
+  }
+  if (isEventExists?.isDeleted) {
+    throw new AppError(StatusCodes.NOT_FOUND, "this event data not fount");
+  }
+  const isAttendeeExists = await Attendee.findOne({
+    userId: userId,
+    eventId: isEventExists?._id,
+  });
+  if (!isAttendeeExists) {
+    throw new AppError(StatusCodes.NOT_FOUND, "no data found");
+  }
+  const session = await mongoose.startSession();
+  try {
+    session.startTransaction();
+    const cancelJoin = await Attendee.deleteOne(
+      {
+        userId: userId,
+        eventId: isEventExists?._id,
+      },
+      { session }
+    );
+    if (!cancelJoin.deletedCount) {
+      throw new AppError(
+        StatusCodes.BAD_REQUEST,
+        "faild to cancell your attending"
+      );
+    }
+    const reduceCount = await Event.findByIdAndUpdate(
+      isEventExists?._id,
+      { $inc: { attendeeCount: -1 } },
+      { session, new: true, runValidators: true }
+    );
+    if (!reduceCount) {
+      throw new AppError(
+        StatusCodes.BAD_REQUEST,
+        "faild to cancell your attending"
+      );
+    }
+    await session.commitTransaction();
+    await session.endSession();
+    return null;
+  } catch (err: any) {
+    await session.abortTransaction();
+    await session.endSession();
+    throw new AppError(StatusCodes.BAD_REQUEST, err);
+  }
+};
+
 export const attendeeService = {
   createAttendeeToJoin,
+  cancelJoining,
 };

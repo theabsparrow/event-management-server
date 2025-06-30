@@ -9,5 +9,9 @@ router.post(
   auth(USER_ROLE.user),
   attendeeController.createAttendee
 );
-
+router.delete(
+  "/cancel-joining/:id",
+  auth(USER_ROLE.user),
+  attendeeController.cancelJoining
+);
 export const attendeeRoute = router;
