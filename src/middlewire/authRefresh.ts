@@ -9,7 +9,7 @@ import config from "../config";
 import { JwtPayload } from "jsonwebtoken";
 import { User } from "../module/user/user.model";
 
-export const auth = (...requiredRoles: TUSerRole[]) => {
+export const authRefresh = (...requiredRoles: TUSerRole[]) => {
   return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const token = req.headers.authorization;
     if (!token) {
@@ -17,7 +17,7 @@ export const auth = (...requiredRoles: TUSerRole[]) => {
     }
     let decoded;
     try {
-      decoded = verifyToken(token, config.jwt_access_secret as string);
+      decoded = verifyToken(token, config.jwt_refresh_secret as string);
     } catch (err: any) {
       throw new AppError(
         StatusCodes.UNAUTHORIZED,

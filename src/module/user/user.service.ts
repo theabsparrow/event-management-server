@@ -35,6 +35,43 @@ const createUser = async (payload: TUSer) => {
   return { accessToken, refreshToken, userInfo };
 };
 
+const getMeRoute = async (userId: string) => {
+  const result = await User.findById(userId);
+  if (!result) {
+    throw new AppError(StatusCodes.NOT_FOUND, "user data not found");
+  }
+};
+
+const updateUser = async (id: string, payload: Partial<TUSer>) => {
+  const isUserExists = await User.findById(id);
+  if (!isUserExists) {
+    throw new AppError(StatusCodes.NOT_FOUND, "user data not found");
+  }
+  const result = await User.findByIdAndUpdate(id, payload, { new: true });
+  if (!result) {
+    throw new AppError(StatusCodes.BAD_REQUEST, "faild to update data");
+  }
+};
+
+const deleteUSer = async (id: string) => {
+  const isUserExists = await User.findById(id);
+  if (!isUserExists) {
+    throw new AppError(StatusCodes.NOT_FOUND, "user data not found");
+  }
+  const result = await User.findByIdAndUpdate(
+    id,
+    { isDeleted: true },
+    { new: true }
+  );
+  if (!result) {
+    throw new AppError(StatusCodes.BAD_REQUEST, "faild to delete account");
+  }
+  return null;
+};
+
 export const userService = {
   createUser,
+  getMeRoute,
+  updateUser,
+  deleteUSer,
 };

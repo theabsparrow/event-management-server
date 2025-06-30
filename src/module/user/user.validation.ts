@@ -26,6 +26,24 @@ const userValidationSchema = z.object({
     .url("invalid url"),
 });
 
+const updateUserValidationSchema = z.object({
+  name: z
+    .string({ required_error: "name is required" })
+    .max(30, "name can`t be more than 30 character")
+    .optional(),
+  email: z
+    .string({
+      required_error: "email is required",
+    })
+    .email("Invalid email")
+    .trim()
+    .optional(),
+  photoURL: z
+    .string({ required_error: "image should be in string" })
+    .url("invalid url")
+    .optional(),
+});
 export const userValidation = {
   userValidationSchema,
+  updateUserValidationSchema,
 };
