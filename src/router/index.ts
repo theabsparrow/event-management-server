@@ -5,7 +5,7 @@ const router = Router();
 
 const moduleRoutes = [
   {
-    path: "/create-user",
+    path: "/user",
     route: userController.createUser,
   },
 ];
