@@ -40,6 +40,7 @@ const getMeRoute = async (userId: string) => {
   if (!result) {
     throw new AppError(StatusCodes.NOT_FOUND, "user data not found");
   }
+  return result;
 };
 
 const updateUser = async (id: string, payload: Partial<TUSer>) => {
