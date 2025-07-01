@@ -29,7 +29,7 @@ const eventValidationSchema = z.object({
     }),
   location: z
     .string({ required_error: "location is required" })
-    .max(30, "location can`t be more than 30 character"),
+    .max(100, "location can`t be more than 100 character"),
   description: z
     .string({ required_error: "description is required" })
     .min(10, "description can`t be less than 10 charcter")
@@ -68,7 +68,7 @@ const updateEventValidationSchema = z.object({
     .optional(),
   location: z
     .string({ required_error: "location is required" })
-    .max(30, "location can`t be more than 30 character")
+    .max(100, "location can`t be more than 100 character")
     .optional(),
   description: z
     .string({ required_error: "description is required" })

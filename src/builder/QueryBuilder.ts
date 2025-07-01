@@ -31,26 +31,23 @@ class QueryBuilder<T> {
       "fields",
     ];
     excludeFields.forEach((element) => delete queryObject[element]);
-    // if (this.query.minPrice && this.query.maxPrice) {
-    //   const minPrice = Number(this.query.minPrice);
-    //   const maxPrice = Number(this.query.maxPrice);
-    //   queryObject.price = { $gte: minPrice, $lte: maxPrice };
-    // }
     this.modelQuery = this.modelQuery.find(queryObject);
     return this;
   }
 
   sort() {
-    const sortOrder = this?.query?.sortOrder === "desc" ? "-" : "";
-    const sortingData = this?.query?.sort
-      ? (this.query.sort as string).split(",")?.join(" ")
-      : "-createdAt";
-    let sort;
-    sort = sortingData || "createdAt";
-    if (sortOrder) {
-      sort = `${sortOrder}${sortingData}`;
+    const sortBy = this.query.sort as string | undefined;
+    const sortOrder = this.query.sortOrder === "asc" ? 1 : -1;
+
+    if (sortBy) {
+      const fields = sortBy.split(",").map((field) => {
+        return { [field]: sortOrder };
+      });
+      this.modelQuery = this.modelQuery.sort(Object.assign({}, ...fields));
+    } else {
+      this.modelQuery = this.modelQuery.sort({ date: -1, time: -1 });
     }
-    this.modelQuery = this.modelQuery.sort(sort);
+
     return this;
   }
   paginateQuery() {

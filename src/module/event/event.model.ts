@@ -44,7 +44,7 @@ const EventSchema = new Schema<TEvent>(
       type: String,
       required: [true, "location is required"],
       min: [1, "location can`t be blank"],
-      max: [30, "location can`t be more than 30 character"],
+      max: [100, "location can`t be more than 100 character"],
       trim: true,
     },
     description: {
