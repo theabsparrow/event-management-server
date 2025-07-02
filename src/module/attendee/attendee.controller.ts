@@ -35,7 +35,21 @@ const cancelJoining = catchAsync(
     });
   }
 );
+
+const myJoiningEvent = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { userId } = req.user as JwtPayload;
+    const result = await attendeeService.myJoiningEvent(userId);
+    sendResponse(res, {
+      success: true,
+      statusCode: StatusCodes.OK,
+      message: "events retrived successfully",
+      data: result,
+    });
+  }
+);
 export const attendeeController = {
   createAttendee,
   cancelJoining,
+  myJoiningEvent,
 };

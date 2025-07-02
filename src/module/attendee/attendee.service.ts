@@ -124,7 +124,12 @@ const cancelJoining = async (userId: string, id: string) => {
   }
 };
 
+const myJoiningEvent = async (userId: string) => {
+  const result = await Attendee.find({ userId: userId }).populate("eventId");
+  return result;
+};
 export const attendeeService = {
   createAttendeeToJoin,
   cancelJoining,
+  myJoiningEvent,
 };

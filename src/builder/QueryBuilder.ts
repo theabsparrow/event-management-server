@@ -29,8 +29,15 @@ class QueryBuilder<T> {
       "limit",
       "page",
       "fields",
+      "startDate",
+      "endDate",
     ];
     excludeFields.forEach((element) => delete queryObject[element]);
+    if (this.query.startDate && this.query.endDate) {
+      const startDate = new Date(this.query.startDate as string);
+      const endDate = new Date(this.query.endDate as string);
+      queryObject.date = { $gte: startDate, $lte: endDate };
+    }
     this.modelQuery = this.modelQuery.find(queryObject);
     return this;
   }

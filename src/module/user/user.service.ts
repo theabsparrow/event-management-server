@@ -52,6 +52,7 @@ const updateUser = async (id: string, payload: Partial<TUSer>) => {
   if (!result) {
     throw new AppError(StatusCodes.BAD_REQUEST, "faild to update data");
   }
+  return result;
 };
 
 const deleteUSer = async (id: string) => {
